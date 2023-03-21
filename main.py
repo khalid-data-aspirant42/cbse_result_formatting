@@ -34,7 +34,7 @@ def add_last_few_strings(lst,n):
 
 # ------------ main part ---------
 
-lines = line_to_list('class_10.txt')
+lines = line_to_list('filename.txt')
 new_list2 = [remove_empty_elements(elem2) for elem2 in lines]
 my_new_lst = [extract_elements(elem, 7) for elem in new_list2]
 my_new_lst2 = remove_empty_elements(my_new_lst)  # this is the main result
