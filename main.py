@@ -33,8 +33,8 @@ def add_last_few_strings(lst,n):
     return lst
 
 # ------------ main part ---------
-
-lines = line_to_list('example.txt')
+input1 = str(input('Enter Filename in txt format'))
+lines = line_to_list(input1)
 new_list2 = [remove_empty_elements(elem2) for elem2 in lines]
 my_new_lst = [extract_elements(elem, 7) for elem in new_list2]
 my_new_lst2 = remove_empty_elements(my_new_lst)  # this is the main result
@@ -109,12 +109,19 @@ sub_code = []
 for elem in my_new_lst3[::2]:
     sub_code.append(elem)
 
-numbered_marks = []
+both_type_marks = []
+for elem1 in sub_code:
+    for elem2 in marks1:
+        if sub_code.index(elem1) == marks1.index(elem2):
+            zipped = zip(elem1,elem2)
+            both_type_marks.append(dict(zipped))
+
+standard_marks = []
 for elem1 in sub_code:
     for elem2 in marks:
         if sub_code.index(elem1) == marks.index(elem2):
             zipped = zip(elem1,elem2)
-            numbered_marks.append(dict(zipped))
+            standard_marks.append(dict(zipped))
 
 graded_marks = []
 for elem1 in sub_code:
@@ -123,22 +130,43 @@ for elem1 in sub_code:
             zipped = zip(elem1,elem2)
             graded_marks.append(dict(zipped))
 
-df1 = pd.DataFrame(numbered_marks)
+df1 = pd.DataFrame(standard_marks)
 df2 = pd.DataFrame(graded_marks)
-
-cbse_result1 = pd.concat([student_df,df1,df2], axis=1)
+df3 = pd.DataFrame(both_type_marks)
 
 df_result = pd.Series(result, name='result')
 df_compart = pd.Series(compart, name='compart')
 
-cbse_result = pd.concat([student_df,df1,df_result,df_compart], axis=1)
-# print(cbse_result)
+input2 = str(input('Do you want standard marks,graded marks or both type'))
+
+if input2 =='standard marks':
+    cbse_result = pd.concat([student_df,df1,df_result,df_compart], axis=1)
+elif input2 =='graded marks':
+    cbse_result = pd.concat([student_df,df2,df_result,df_compart], axis=1)
+elif input2 =='both type':
+    cbse_result = pd.concat([student_df,df3,df_result,df_compart], axis=1)
+
+print(cbse_result)
+
+input3 = str(input('Type the resultant format you want:csv,excel,json,html,latex'))
+# Get you file in all essential formats:
+if input3=='csv':
+      # csv format
+    cbse_result.to_csv('cbse_result.csv',index=False)
+elif input3=='excel':
+    # Excel format
+    cbse_result.to_excel('my_data.xlsx', index=False)   
+elif input3=='json':
+    # JSON format
+    cbse_result.to_json('my_data.json', orient='records')   
+elif input3=='html':
+    # HTML format
+    cbse_result.to_html('my_data.html', index=False)   
+elif input3=='latex':
+    # LaTeX format
+    cbse_result.to_latex('my_data.tex', index=False)   
+
+print('Your file has been exported')
 
 
-#Get you file in all essential formats:
-cbse_result.to_csv('cbse_result.csv',index=False)  # csv format
-cbse_result.to_excel('my_data.xlsx', index=False)   # Excel format
-cbse_result.to_json('my_data.json', orient='records')   # JSON format
-cbse_result.to_html('my_data.html', index=False)   # HTML format
-cbse_result.to_latex('my_data.tex', index=False)   # LaTeX format
 
